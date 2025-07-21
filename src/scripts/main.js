@@ -12,7 +12,7 @@ let firstClickHandled = false;
 
 const firstPromise = new Promise((resolve, reject) => {
   const handleClick = (e) => {
-    if (e.button === 0) { // 0 = Left click
+    if (e.button === 0) {
       firstClickHandled = true;
       resolve('First promise was resolved on a left click in the document');
       document.removeEventListener('click', handleClick);
@@ -35,6 +35,7 @@ firstPromise.then(msg => showNotification(msg)).catch(err => showNotification(er
 const secondPromise = new Promise((resolve) => {
   const handleClick = (e) => {
     if (e.button === 0 || e.button === 2) {
+      if (e.button === 2) e.preventDefault(); // prevent context menu
       resolve('Second promise was resolved');
       document.removeEventListener('click', handleClick);
     }
@@ -45,11 +46,14 @@ const secondPromise = new Promise((resolve) => {
 
 secondPromise.then(msg => showNotification(msg));
 
+
 let leftClicked = false;
 let rightClicked = false;
 
 const thirdPromise = new Promise((resolve) => {
   const handleClick = (e) => {
+    if (e.button === 2) e.preventDefault(); // prevent context menu
+
     if (e.button === 0) leftClicked = true;
     if (e.button === 2) rightClicked = true;
 
@@ -63,3 +67,4 @@ const thirdPromise = new Promise((resolve) => {
 });
 
 thirdPromise.then(msg => showNotification(msg));
+
